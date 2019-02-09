@@ -27,7 +27,7 @@ word-wrap: initial !important;
 
 <!--
 - Compile from command-line
-Rscript -e "rmarkdown::render('systemPipeRNAseq.Rmd', c('BiocStyle::html_document'), clean=F); knitr::knit('systemPipeRNAseq.Rmd', tangle=TRUE)"; Rscript ../md2jekyll.R systemPipeRNAseq.knit.md 12; Rscript -e "rmarkdown::render('systemPipeRNAseq.Rmd', c('BiocStyle::pdf_document'))"
+Rscript -e "rmarkdown::render('systemPipeRNAseq_single.Rmd', c('BiocStyle::html_document'), clean=F); knitr::knit('systemPipeRNAseq_single.Rmd', tangle=TRUE)"; Rscript ../md2jekyll.R systemPipeRNAseq_single.knit.md 12; Rscript -e "rmarkdown::render('systemPipeRNAseq_single.Rmd', c('BiocStyle::pdf_document'))"
 -->
 
 ```{r style, echo = FALSE, results = 'asis'}
@@ -90,35 +90,12 @@ additional NGS applications will be provided in the future.
 
 ```{r genRna_workflow, eval=FALSE}
 library(systemPipeRdata)
-genWorkenvir(workflow="rnaseq", url="https://github.com/dcassol/systemPipeR_Workflows/tree/master/rnaseq/version-SingleMachine/")
+genWorkenvir(workflow="rnaseq", url="https://raw.githubusercontent.com/dcassol/systemPipeR_Workflows/master/rnaseq/version-SingleMachine/systemPipeRNAseq_single.Rmd", urlname = "systemPipeRNAseq_single.Rmd")
 setwd("rnaseq")
 ```
 
-Alternatively, this can be done from the command-line as follows:
-
-```{sh genRna_workflow_command_line, eval=FALSE}
-Rscript -e "systemPipeRdata::genWorkenvir(workflow='rnaseq')"
-```
-
 Now open the R markdown script `systemPipeRNAseq.Rmd`in your R IDE (_e.g._
-vim-r or RStudio) and run the workflow as outlined below. If you work under
-Vim-R-Tmux, the following command sequence will connect the user in an
-interactive session with a node on the cluster. The code of the `Rmd`
-script can then be sent from Vim on the login (head) node to an open R session running
-on the corresponding computer node. This is important since Tmux sessions
-should not be run on the computer nodes. 
-
-```{r closeR, eval=FALSE}
-q("no") # closes R session on head node
-```
-
-```{bash node_environment, eval=FALSE}
-srun --x11 --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 2:00:00 --pty bash -l
-module load R/3.4.2
-R
-```
-
-Now check whether your R session is running on a computer node of the cluster and not on a head node.
+vim-r or RStudio) and run the workflow as outlined below. 
 
 ```{r r_environment, eval=FALSE}
 system("hostname") # should return name of a compute node starting with i or c 
@@ -205,31 +182,21 @@ settings of the aligner are defined in the `tophat.param` file.
 ```{r tophat_alignment1, eval=FALSE}
 args <- systemArgs(sysma="param/tophat.param", mytargets="targets.txt")
 sysargs(args)[1] # Command-line parameters for first FASTQ file
-```
-
-Submission of alignment jobs to compute cluster, here using 72 CPU cores
-(18 `qsub` processes each with 4 CPU cores).
-
-```{r tophat_alignment2, eval=FALSE}
-moduleload(modules(args))
 system("bowtie2-build ./data/tair10.fasta ./data/tair10.fasta")
-resources <- list(walltime=120, ntasks=1, ncpus=cores(args), memory=1024) 
-reg <- clusterRun(args, conffile = ".batchtools.conf.R", Njobs=18, template = "batchtools.slurm.tmpl", runid="01", resourceList=resources)
-getStatus(reg=reg) 
-waitForJobs(reg=reg)  
+bampaths <- runCommandline(args = args) 
 ```
 
 ## Read mapping with `HISAT2`
 
+Also, the NGS reads of could be aligned against the reference
+genome sequence using `Hisat2` [@KKim2015-ve]. The parameter 
+settings of the aligner are defined in the `hisat2.param` file.
+
 ```{r hisat_alignment2, eval=FALSE}
 args <- systemArgs(sysma="param/hisat2.param", mytargets="targets.txt")
 sysargs(args)[1] # Command-line parameters for first FASTQ file
-moduleload(modules(args))
 system("hisat2-build ./data/tair10.fasta ./data/tair10.fasta")
-resources <- list(walltime=120, ntasks=1, ncpus=cores(args), memory=1024) 
-reg <- clusterRun(args, conffile = ".batchtools.conf.R", Njobs=18, template = "batchtools.slurm.tmpl", runid="01", resourceList=resources)
-getStatus(reg=reg) 
-waitForJobs(reg=reg)  
+bampaths <- runCommandline(args = args) 
 ```
 
 Check whether all BAM files have been created.
