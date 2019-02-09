@@ -90,7 +90,7 @@ additional NGS applications will be provided in the future.
 
 ```{r genRna_workflow, eval=FALSE}
 library(systemPipeRdata)
-genWorkenvir(workflow="rnaseq")
+genWorkenvir(workflow="rnaseq", url="https://github.com/dcassol/systemPipeR_Workflows/tree/master/rnaseq/version-SingleMachine/")
 setwd("rnaseq")
 ```
 
