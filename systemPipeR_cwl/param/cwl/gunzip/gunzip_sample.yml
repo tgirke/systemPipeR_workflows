@@ -1,0 +1,14 @@
+################################################################
+##                         gunzip.yml                         ##
+################################################################
+fq1:
+  class: File
+  path: /home/dcassol/danielac@ucr.edu/github/cwl/systemPipeRcwl/data/SRR446027_1.fastq.gz #_FASTQ_PATH_
+  
+SampleName: SRR446027_1 #_SampleName_
+
+ModulesToLoad: 
+
+results_path:
+  class: Directory
+  path: ./data

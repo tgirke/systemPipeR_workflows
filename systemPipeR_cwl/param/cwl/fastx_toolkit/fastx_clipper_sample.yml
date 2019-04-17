@@ -1,0 +1,18 @@
+#############################
+## fastx_clipper.yml ##
+#############################
+
+gunzip:
+  class: File
+  path: /home/dcassol/danielac@ucr.edu/github/systemPipeR_Workflows/systemPipeR_overview/version-cwl/data/SRR446027_1.fastq #_FASTQ_PATH_
+  
+SampleName: aaaa #_SampleName_
+
+results_path:
+  class: Directory
+  path: ./results
+
+ModulesToLoad: 
+  module1: fastx_toolkit/0.0.13 
+
+adaptor: AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC

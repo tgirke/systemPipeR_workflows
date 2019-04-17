@@ -1,0 +1,30 @@
+# Job configuration sample
+
+index_basedir:
+  class: Directory
+  path: /home/dcassol/danielac@ucr.edu/github/cwl/systemPipeRcwl/data
+
+reference_file:
+  class: File
+  path: /home/dcassol/danielac@ucr.edu/github/cwl/systemPipeRcwl/data/tair10.fasta
+
+index_basename: tair10
+
+fq1:
+  class: File
+  path: /home/dcassol/danielac@ucr.edu/github/cwl/systemPipeRcwl/data/SRR446027_1.fastq.gz
+
+fq2:
+  class: File
+  path: /home/dcassol/danielac@ucr.edu/github/cwl/systemPipeRcwl/data/SRR446027_2.fastq.gz
+ 
+nthreads: 4
+
+output_filename: SRR446027
+
+rscript:
+  class: File
+  path: /home/dcassol/danielac@ucr.edu/github/cwl/systemPipeRcwl/param/rsubreadPE.R
+
+SampleName: SRR446027
+

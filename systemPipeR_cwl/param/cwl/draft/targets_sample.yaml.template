@@ -1,0 +1,20 @@
+# Configuration sample 
+
+index_basedir:
+  class: Directory
+  path: ...
+
+reference_file:
+  class: File
+  path: ...
+
+index_basename: ...
+
+fq:
+  - class: File
+    path: ...
+
+nthreads: ...
+
+output_filename: ...
+
