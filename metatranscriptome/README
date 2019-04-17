@@ -1,0 +1,13 @@
+# MetaRNA workflow
+
+**GOAL**
+Metatranscriptome analysis is challenging and many different tools and workflows have been developed, but every procedure has its pros and cons. Here we introduce an interactive workflow that allows the user to build its own automated workflow within the package systemPipeR. Currently, the options available for the user are:
+
+* Soft or regular quality trimming
+* Filter reads by taxon (i.e. remove unwanted organisms) or use all data
+* *de novo* assembly or genome-guided assembly
+* Read count normalization on global scale or re-scaled from organism-level normalization
+* Annotation
+* Differential expression gene or transcript analysis
+
+
